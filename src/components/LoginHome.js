@@ -42,8 +42,12 @@ const LoginNav = ({isLogin}) => {
 
 const LoginHome = ({ isLogin }) => {
 
+  let {data: cards} = useQuery('cardsCache', async () => {
+    const response = await API.get('/trips')
+    return response.data.data
+  })
 
-
+  let [searchTerm, setTerm] = useState("")
 
   return (
     <div className="main">
@@ -122,6 +126,16 @@ const LoginHome = ({ isLogin }) => {
           </Card>
         ))
       }
+
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  )
+}
+
+export default LoginHome;
 
           </div>
         </div>
