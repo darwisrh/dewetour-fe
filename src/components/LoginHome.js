@@ -136,13 +136,3 @@ const LoginHome = ({ isLogin }) => {
 }
 
 export default LoginHome;
-
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
-  )
-}
-
-export default LoginHome;
