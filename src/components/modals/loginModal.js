@@ -15,11 +15,10 @@ import { UserContext } from '../../context/userContext';
 function LoginModal({show, setShow, handleClose, handleShowR, style, value, handleShowL}) {
 
   const navigate = useNavigate()
-  const [state, dispatch] = useContext(UserContext)
+  const [ , dispatch] = useContext(UserContext)
   const [form, setForm] = useState({
     email: "",
-    password: "",
-    role: "admin"
+    password: ""
   })
 
   const handleChange = (e) => {

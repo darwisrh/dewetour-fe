@@ -2,7 +2,6 @@
 import LoginNav from "./LoginNav"
 import { Link, useParams } from "react-router-dom"
 import { useState } from "react"
-import LoginPayment from "./LoginPayment"
 import Footer from "./footer"
 import ProfileDrop from "./modals/ProfileDd"
 import { useQuery } from "react-query"
@@ -11,9 +10,9 @@ import { useMutation } from "react-query"
 import { UserContext } from "../context/userContext"
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
+import { InfinitySpin } from "react-loader-spinner"
 
 // Detail Images
-import Opera from '../images/Details/detail1.png'
 import Detail2 from '../images/Details/detail2.png'
 import Detail3 from '../images/Details/detail3.png'
 import Detail4 from '../images/Details/detail4.png'
@@ -63,7 +62,7 @@ const LoginDetailTour = () => {
   const [state] = useContext(UserContext)
   
   let detail = useParams()
-  let {data: detailTour} = useQuery('tourCache', async () => {
+  let {data: detailTour, isFetching} = useQuery('tourCache', async () => {
     const response = await API.get(`/trip/${detail.id}`)
     return response.data.data
   })
@@ -71,10 +70,9 @@ const LoginDetailTour = () => {
   let [counter, setCounter] = useState(detailTour?.qtyCounter)
 
   const plus = () => {
-    if (counter >= detailTour?.quota){
-      counter = detailTour?.quota
+    if (counter < detailTour?.quota){
+      setCounter(counter + 1)
     }
-    setCounter(counter + 1)
   }
 
   const minus = () => {
@@ -123,6 +121,22 @@ const LoginDetailTour = () => {
     // ============================
 
     let home = '/home'
+
+    if (isFetching) {
+      return (
+        <div style={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <InfinitySpin 
+          width='200'
+          color="#FFAF00"
+          />
+        </div>
+      )
+    }
 
   return (
     <>
@@ -209,9 +223,17 @@ const LoginDetailTour = () => {
 
         <hr />
 
-        <div className="payment-button">
-          <Link onClick={(e) => handleSubmit.mutate(e)} className='button'>BOOK NOW</Link>
-        </div>
+        {
+          handleSubmit.isLoading ? (
+            <div className="payment-button">
+              <Link className='button'>BOOKING...</Link>
+            </div>
+          ) : (
+            <div className="payment-button">
+              <Link onClick={(e) => handleSubmit.mutate(e)} className='button'>BOOK NOW</Link>
+            </div>
+          )
+        }
       </div>
     </div>
       <Footer />

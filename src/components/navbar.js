@@ -35,17 +35,6 @@ const NavigationBar = (style) => {
   return (
     <header className="header">
         <div className="search">
-
-        <img style={{
-          position: "absolute",
-          top: "200px",
-          left: "1230px"
-        }} src={Hibiscus} alt="hibiscus" />
-
-        <img style={style.test[0]} src={Vector} alt="vector" />
-
-        <img style={style.test[1]} src={Palm} alt="palm" />
-
           <nav>
             <div className="left-side">
               <ul>
@@ -72,7 +61,6 @@ const NavigationBar = (style) => {
                   setShow={setShowR} 
                   handleShow={handleShow}
                   handleShowL={handleShowL}
-                  setShowL={setShow}
                   /></li>
               </ul>
             </div>

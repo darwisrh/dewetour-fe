@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import ProfileDrop from "./modals/ProfileDd";
 import { useState } from "react";
 import Card from 'react-bootstrap/Card';
+import { InfinitySpin } from "react-loader-spinner";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Pages
@@ -42,12 +43,28 @@ const LoginNav = ({isLogin}) => {
 
 const LoginHome = ({ isLogin }) => {
 
-  let {data: cards} = useQuery('cardsCache', async () => {
+  let [searchTerm, setTerm] = useState("")
+
+  let {data: cards, isFetching} = useQuery('cardsCache', async () => {
     const response = await API.get('/trips')
     return response.data.data
   })
 
-  let [searchTerm, setTerm] = useState("")
+  if (isFetching) {
+    return (
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <InfinitySpin 
+        width='200'
+        color="#FFAF00"
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="main">

@@ -1,16 +1,18 @@
 import { Component } from "react";
+import '../css/header.css'
 
 class Footer extends Component {
   render() {
     return (
       <>
-        <footer style={{ 
-          background: "#FFAF00", 
-          height: "50px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-          }}>
+        {/* <footer 
+        style={{
+          background: '#FFAF00',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '50px'
+        }}>
           <p style={{
             color: "#FFFFFF",
             fontSize: "16px",
@@ -19,7 +21,7 @@ class Footer extends Component {
           }}>
             Copyright @ 2020 Dewe Tour - Darwis Revi H - NIS. All Rights reserved
           </p>
-        </footer>
+        </footer> */}
       </>
     )
   }

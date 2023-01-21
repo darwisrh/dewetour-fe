@@ -9,6 +9,8 @@ import { API } from "../../config/api"
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { ThreeDots } from 'react-loader-spinner';
 
 // Styling
 const test = [
@@ -78,7 +80,6 @@ const AddTrip = () => {
     description: "",
     image: ""
   })
-  console.log(form);
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -103,21 +104,30 @@ const AddTrip = () => {
       formData.append('title', form.title)
       formData.append('accomodation', form.accomodation)
       formData.append('transportation', form.transportation)
-      formData.append('countryid', form.countryid)
+      formData.append('country_id', form.countryid)
       formData.append('eat', form.eat)
       formData.append('day', form.day)
       formData.append('night', form.night)
       formData.append('date', form.date)
       formData.append('quota', form.quota)
       formData.append('price', form.price)
-      formData.append('description', form.description)
+      formData.append('desc', form.description)
       formData.append('image', form.image)
 
       // Memasukkan data user ke Database
       const response = await API.post('/trip', formData)
-      navigate('/income-trips')
+      if (response.status === 200) {
+        navigate('/income-trips')
+      }
     } catch (err) {
       console.log(err)
+      if (err) {
+        Swal.fire({
+          title: 'Addtrip Failed',
+          text: 'Something Went Wrong',
+          icon: 'error'
+        })
+      }
     }
   })
 
@@ -138,6 +148,7 @@ const AddTrip = () => {
             <Form.Group className="mb-3">
               <Form.Label style={font}>Country</Form.Label>
               <Form.Select style={formControl} name='countryid' onChange={handleChange}>
+                <option value="none" selected>- Choose Here -</option>
                 {
                   country?.map((country) => (
                     <option key={country.id} value={country.id}>{country.name}</option>
@@ -225,16 +236,39 @@ const AddTrip = () => {
               display: "flex",
               justifyContent: "center"
             }}>
-              <button style={{
-                width: "250px",
-                height: "40px",
-                background: "#FFAF00",
-                color: "white",
-                fontSize: "18px",
-                fontWeight: "800",
-                border: "1px solid #FFAF00",
-                borderRadius: "5px"
-              }} type="submit" >Add trip</button>
+              {
+                handleSubmit.isLoading ? (
+                  <button style={{
+                    width: "100%",
+                    height: "40px",
+                    background: "#FFAF00",
+                    color: "white",
+                    fontSize: "18px",
+                    fontWeight: "800",
+                    border: "1px solid #FFAF00",
+                    borderRadius: "5px",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }} type="submit" disabled>
+                  <ThreeDots
+                  width="40"
+                  color="white"
+                  />
+                  </button>
+                ) : (
+                  <button style={{
+                    width: "100%",
+                    height: "40px",
+                    background: "#FFAF00",
+                    color: "white",
+                    fontSize: "18px",
+                    fontWeight: "800",
+                    border: "1px solid #FFAF00",
+                    borderRadius: "5px"
+                  }} type="submit">Add trip</button>
+                )
+              }
             </div>
           </Form>
           </div>

@@ -4,14 +4,12 @@ import AdminDrop from "./dropDown";
 import LoginNav from "../LoginNav";
 import Card from 'react-bootstrap/Card';
 import Footer from "../footer";
+import { InfinitySpin } from 'react-loader-spinner';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Fetching Stuff
 import { useQuery } from "react-query";
 import { API } from "../../config/api";
-
-// Sike
-let admin = '/income-transaction'
 
 // Styling
 const test = [
@@ -81,10 +79,27 @@ const cardWrapper = {
 
 const IncomeTrip = ({ home }) => {
 
-  let {data: tourCards} = useQuery('tourCardsCache', async () => {
+  let {data: tourCards, isFetching} = useQuery('tourCardsCache', async () => {
     const response = await API.get('/trips')
     return response.data.data
   })
+  console.log(tourCards)
+
+    if (isFetching) {
+      return (
+        <div style={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <InfinitySpin 
+          width='200'
+          color="#FFAF00"
+          />
+        </div>
+      )
+    }
 
     return (
       <>

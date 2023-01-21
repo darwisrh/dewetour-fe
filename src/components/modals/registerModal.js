@@ -4,13 +4,16 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Palm from './images/Palm2.png';
 import Hibiscus from './images/hibiscus2.png';
+import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Register Config
 import { useMutation } from "react-query"
 import { API } from "../../config/api"
 
-function RegisterModal({ show, setShow, handleShow }) {
+function RegisterModal({ show, setShow, handleShow, handleShowL }) {
+
+  const handleClose = () => setShow(false)
 
   const [form, setForm] = useState({
     fullname: "",
@@ -18,7 +21,6 @@ function RegisterModal({ show, setShow, handleShow }) {
     password: "",
     phone: "",
     address: ""
-
   })
 
   const handleOnChange = (e) => {
@@ -38,20 +40,18 @@ function RegisterModal({ show, setShow, handleShow }) {
           'Content-Type': 'application/json'
         }
       }
-
       const body = JSON.stringify(form)
-
-      // Memasukkan data user ke Database
       const response = await API.post('/register', body, config)
-
+      if (response.status === 200) {
+        Swal.fire({
+          title: 'Register Success',
+          icon: 'success'
+        })
+      }
     } catch (err) {
       console.log(err)
     }
   })
-
-  // Close functions
-  const handleClose = () => setShow(false);
-  const handleTrue = () => setShow(true);
 
   return (
     <>

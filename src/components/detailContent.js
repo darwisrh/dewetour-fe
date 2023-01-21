@@ -2,6 +2,7 @@ import '../css/detail.css'
 import Footer from './footer'
 import RegisterModal from './modals/registerModal'
 import { useParams } from 'react-router-dom'
+import { InfinitySpin } from 'react-loader-spinner';
 
 // Detail Images
 import Detail2 from '../images/Details/detail2.png'
@@ -56,7 +57,7 @@ const DetailContent = ({admin}) => {
 
     let detailId = useParams()
 
-    let {data: tourDetail} = useQuery('tripCache', async () => {
+    let {data: tourDetail, isFetching} = useQuery('tripCache', async () => {
       const response = await API.get(`/trip/${detailId.id}`);
       return response.data.data
     })
@@ -65,10 +66,9 @@ const DetailContent = ({admin}) => {
     let [counter, setCounter] = useState(tourDetail?.qtyCounter)
     
     const plus = () => {
-      if (counter >= tourDetail?.quota - 1) {
-        counter = tourDetail?.quota
+      if (counter < tourDetail?.quota) {
+        setCounter(counter + 1)
       }
-      setCounter(counter + 1)
     }
     
     const minus = () => {
@@ -79,9 +79,25 @@ const DetailContent = ({admin}) => {
     }
 
     let intPrice = tourDetail?.price
-    let stringPrice = intPrice.toLocaleString()
+    let stringPrice = intPrice
     let tourPrice = tourDetail?.price * counter
     let finalPrice = tourPrice.toLocaleString()
+
+    if (isFetching) {
+      return (
+        <div style={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <InfinitySpin 
+          width='200'
+          color="#FFAF00"
+          />
+        </div>
+      )
+    }
 
   return (
     <>

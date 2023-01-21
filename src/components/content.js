@@ -2,6 +2,7 @@ import '../css/content.css';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Detail from './detail';
+import { InfinitySpin } from 'react-loader-spinner';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Fetching Database Stuff
@@ -10,10 +11,26 @@ import { API } from '../config/api';
 
 const Content = () => {
 
-  let {data: tourCards} = useQuery('tripsCache', async () => {
+  let {data: tourCards, isFetching} = useQuery('tripsCache', async () => {
     const response = await API.get('/trips')
     return response.data.data
   })
+
+  if (isFetching) {
+    return (
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <InfinitySpin 
+        width='200'
+        color="#FFAF00"
+        />
+      </div>
+    )
+  }
 
   return(
     <>
