@@ -102,7 +102,7 @@ const LoginHome = ({ isLogin }) => {
                         <Form.Control
                           aria-label="Recipient's username"
                           aria-describedby="basic-addon2"
-                          placeholder="Search something here BRUV artinya CUACA HARI INI CERAH YA :D"
+                          placeholder="Search tour here.."
                           onChange={e => 
                             {setTerm(e.target.value)}}
                         />
